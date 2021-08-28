@@ -49,8 +49,8 @@ const box2 = new Box('Box of chocolates', user2.name, [st1.name, st3.name, st5.n
 const box3 = new Box('Handmade box', user3.name, [st2.name, st4.name, st5.name]);
 
 function showInfo(user, box) {
-  return `${box.owner} is ${user.getAge()} years old on position 
-  ${user.getPos()} has ${box.name} with ${(box.content).join(', ')}.`;
+  return `${box.owner} is ${user.getAge()} years old on position` + 
+  `${user.getPos()} has ${box.name} with ${(box.content).join(', ')}.`;
 }
 
 console.log(showInfo(user1, box1));
