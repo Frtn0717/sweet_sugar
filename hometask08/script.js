@@ -5,16 +5,23 @@ class Entity {
 }
 
 class Stuff extends Entity {
-  constructor(name) {
+  constructor(name, color) {
     super(name);
+    this.color = color;
   }
 }
 
 class Box extends Entity {
-  constructor(name, owner, content) {
+  constructor(name, content, owner) {
     super(name);
-    this.owner = owner;
-    this.content = content;
+    this.content = content.map(item => {
+      if (item.color) {
+        return {name: item.name, color: item.color}
+      } else {
+        return {name: item.name}
+      }
+    });
+    this.ownerName = owner.name;
   };
 
 }
@@ -34,25 +41,62 @@ class User extends Entity {
     return this.position;
   }
 
+  setBoxesNames(box) {
+    return this.boxesNames = [box];
+  }
+
 }
 
 const user1 = new User('Stan', 33, 'developer');
-const user2 = new User('Michel', 23, 'designer');
+const user2 = new User('Michael', 23, 'designer');
 const user3 = new User('Samantha', 27, 'manager');
-const st1 = new Stuff('pencil');
-const st2 = new Stuff('pen');
-const st3 = new Stuff('eraser');
-const st4 = new Stuff('calculator');
-const st5 = new Stuff('paper');
-const box1 = new Box('Old sneaker box', user1.name, [st1.name, st2.name, st5.name]);
-const box2 = new Box('Box of chocolates', user2.name, [st1.name, st3.name, st5.name]);
-const box3 = new Box('Handmade box', user3.name, [st2.name, st4.name, st5.name]);
 
-function showInfo(user, box) {
-  return `${box.owner} is ${user.getAge()} years old on position` + 
-  `${user.getPos()} has ${box.name} with ${(box.content).join(', ')}.`;
-}
+const box1 = new Box(
+  'Old sneaker box', 
+  [new Stuff('pencil', 'grey'), new Stuff('pen', 'blue'), new Stuff('paper', 'white')],
+  new User('Stan', 33, 'developer')
+  );
 
-console.log(showInfo(user1, box1));
-// console.log(showInfo(user2, box2));
-// console.log(showInfo(user3, box3));
+  user1.setBoxesNames(box1.name);
+
+const box2 = new Box(
+  'Box of chocolates', 
+  [new Stuff('pencil', 'black'), new Stuff('eraser'), new Stuff('paper', 'white')],
+  new User('Michael', 23, 'designer')
+  );
+
+  user2.setBoxesNames(box2.name);
+
+const box3 = new Box(
+  'Handmade box', 
+  [new Stuff('pen', 'red'), new Stuff('calculator', 'black'), new Stuff('paper')],
+  new User('Samantha', 27, 'manager')
+  );
+
+  user3.setBoxesNames(box3.name);
+
+
+function showInfo(box, user) {
+  return `${box.ownerName} is ${user.getAge()} years old on position ` + 
+  `${user.getPos()} has ${box.name} with` + 
+  `${box.content.map(item => {
+    if (item.color) {
+      return ` ${item.color} ${item.name}`;
+    } else {
+      return ` ${item.name}`;
+    }
+  })}.`
+};
+
+
+  // console.log(box1);
+  // console.log(box2);
+  // console.log(box3);
+
+  // console.log(user1);
+  // console.log(user2);
+  // console.log(user3);
+
+console.log(showInfo(box1, user1));
+console.log(showInfo(box2, user2));
+console.log(showInfo(box3, user3));
